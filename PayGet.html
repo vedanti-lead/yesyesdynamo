@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="pg.css">
+    <title>Payment</title>
+</head>
+
+<body>
+    <div class="box">
+        <form id="paymentForm"> <!-- Added ID attribute to the form -->
+            <div class="rows">
+                <div class="col">
+                    <h3 class="pay-ttl">Billing Address</h3>
+                    <div class="inputBox">
+                        <span>Full Name :</span>
+                        <input type="text" id="fname" name="fname" placeholder="Vedanti Verma" required>
+                    </div>
+                    <div class="inputBox">
+                        <span>Email :</span>
+                        <input type="text" id="email" name="email" placeholder="example@example.com" required>
+                    </div>
+                    <div class="inputBox">
+                        <span>Address :</span>
+                        <input type="text" id="address" placeholder="room - street - locality" required>
+                    </div>
+                    <div class="inputBox">
+                        <span>City :</span>
+                        <input type="text" id="city" name="city" placeholder="Mumbai" required>
+                    </div>
+                    <div class="flex">
+                        <div class="inputBox">
+                            <span>State: </span>
+                            <input type="text" id="state" name="state" placeholder="India" required>
+                        </div>
+                        <div class="inputBox">
+                            <span>Zip Code: </span>
+                            <input type="number" id="zipc" name="zipc" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <h3 class="pay-ttl">Payment</h3>
+                    <div class="inputBox">
+                        <span>Cards accepted :</span>
+                        <img src="cards.png" alt="">
+                    </div>
+                    <div class="inputBox">
+                        <span>Card Name :</span>
+                        <input type="text" id="cname" placeholder="example@example.com" required>
+                    </div>
+                    <div class="inputBox">
+                        <span>Name on Card :</span>
+                        <input type="text" id="nocard" placeholder="Miss Vedanti Verma" required>
+                    </div>
+                    <div class="inputBox">
+                        <span>Credit Card Number :</span>
+                        <input type="number" id="ccnum" placeholder="1111-2222-3333-4444" required>
+                    </div>
+                    <div class="inputBox">
+                        <span>Expiry Month :</span>
+                        <input type="text" id="exmonth" placeholder="Mumbai" required>
+                    </div>
+                    <div class="flex">
+                        <div class="inputBox">
+                            <span>Expiry Year : </span>
+                            <input type="number" id="exyear" placeholder="2024" required>
+                        </div>
+                        <div class="inputBox">
+                            <span>CVV :</span>
+                            <input type="number" id="cvv" placeholder="2345" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" value="Proceed to checkout" class="submit-btn">
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('paymentForm');
+
+            form.addEventListener('submit', async function (event) {
+                event.preventDefault();
+
+                // Extracting necessary form fields
+                const formData = {
+                    fname: document.getElementById('fname').value,
+                    email: document.getElementById('email').value,
+                    address: document.getElementById('address').value,
+                    city: document.getElementById('city').value,
+                    state: document.getElementById('state').value,
+                    zipc: document.getElementById('zipc').value,
+                    cname: document.getElementById('cname').value,
+                    nocard: document.getElementById('nocard').value,
+                    ccnum: document.getElementById('ccnum').value,
+                    exmonth: document.getElementById('exmonth').value,
+                    exyear: document.getElementById('exyear').value,
+                    cvv: document.getElementById('cvv').value
+                };
+
+                console.log(formData);
+
+                // Sending data to the API endpoint
+                try {
+                    const response = await fetch('https://6k3t28lpz7.execute-api.ap-south-1.amazonaws.com/prod', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to submit form');
+                    }
+
+                    const responseData = await response.json();
+                    console.log('Form submitted successfully:', responseData);
+                    // You can handle the response data here, like showing a success message to the user
+                } catch (error) {
+                    console.error('Error submitting form:', error.message);
+                    // You can handle errors here, like showing an error message to the user
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>
